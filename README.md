@@ -1,4 +1,5 @@
 ## City-Bike-Dev-Academy-task
+![alt text](./src/assets/city-bike.png)
 
 ## Installation
 
