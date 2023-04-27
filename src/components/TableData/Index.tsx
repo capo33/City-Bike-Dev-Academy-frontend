@@ -1,11 +1,13 @@
 import { IBike } from "../../interfaces/BikeInterface";
 import { divStyle } from "../../utils/styles";
+import Spinner from "../Spinner/Index";
 
 import "./table_Data.css";
 
 interface TableDataProps {
   bikes: IBike[];
-  numberOfPages: number;
+  loading: boolean;
+   numberOfPages: number;
   currentPage: number;
   nextPage: () => void;
   prevPage: () => void;
@@ -14,13 +16,17 @@ interface TableDataProps {
 // const TableData = ({ bikes }: { bikes: IBike[] }) => {
 const TableData = ({
   bikes,
-  numberOfPages,
+  loading,
+   numberOfPages,
   currentPage,
   nextPage,
   pageByNumber,
   prevPage,
 }: TableDataProps) => {
-  return (
+  if (loading) {
+    return <Spinner />;
+  }
+   return (
     <div className='table_container '>
       <div className='row align-items-center'>
         <div className='col-md-6'>
@@ -52,7 +58,7 @@ const TableData = ({
                   </tr>
                 </thead>
                 <tbody>
-                  {bikes.map((bike: IBike) => (
+                   {bikes.map((bike: IBike) => (
                     <tr key={bike._id}>
                       <td>
                         {bike.Departure?.toString().slice(0, 10)} /{" "}
@@ -110,10 +116,8 @@ const TableData = ({
               </ul>
             </nav>
           </div>
-        </div >
-            <div style={divStyle}>
-            Current page: {currentPage}
-            </div>
+        </div>
+        <div style={divStyle}>Current page: {currentPage}</div>
       </div>
     </div>
   );

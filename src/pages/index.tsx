@@ -7,6 +7,7 @@ import { H1Style } from "../utils/styles";
 
 const Home = () => {
   const [bikes, setBikes] = useState<IBike[]>([]);
+  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [numberOfPages, setNumberOfPages] = useState(0);
 
@@ -14,30 +15,36 @@ const Home = () => {
 
   useEffect(() => {
     const getBikes = async () => {
-      const response = await axios.get(`${url}=${currentPage}`);
+      setLoading(true);
+      try {
+        const response = await axios.get(`${url}=${currentPage}`);
 
-      const data = response?.data?.data?.map(function (obj: any) {
-        // Assign new key
-        obj["Departure_station_id"] = obj["Departure station id"];
-        obj["Covered_distance_m"] = obj["Covered distance (m)"];
-        obj["Departure_station_name"] = obj["Departure station name"];
-        obj["Return_station_id"] = obj["Return station id"];
-        obj["Return_station_name"] = obj["Return station name"];
-        obj["Duration__sec"] = obj["Duration (sec"];
+        const data = response?.data?.data?.map(function (obj: any) {
+          // Assign new key
+          obj["Departure_station_id"] = obj["Departure station id"];
+          obj["Covered_distance_m"] = obj["Covered distance (m)"];
+          obj["Departure_station_name"] = obj["Departure station name"];
+          obj["Return_station_id"] = obj["Return station id"];
+          obj["Return_station_name"] = obj["Return station name"];
+          obj["Duration__sec"] = obj["Duration (sec"];
 
-        // Delete old key
-        delete obj["Departure station id"];
-        delete obj["Covered distance (m)"];
-        delete obj["Departure station name"];
-        delete obj["Return station id"];
-        delete obj["Return station name"];
-        delete obj["Duration (sec"];
+          // Delete old key
+          delete obj["Departure station id"];
+          delete obj["Covered distance (m)"];
+          delete obj["Departure station name"];
+          delete obj["Return station id"];
+          delete obj["Return station name"];
+          delete obj["Duration (sec"];
 
-        return obj;
-      });
-      console.log(response.data.numberOfPages);
-      setNumberOfPages(response.data.numberOfPages);
-      setBikes(data);
+          return obj;
+        });
+        console.log(response.data.numberOfPages);
+        setLoading(false);
+        setNumberOfPages(response.data.numberOfPages);
+        setBikes(data);
+      } catch (error) {
+        console.log(error);
+      }
     };
 
     getBikes();
@@ -58,9 +65,10 @@ const Home = () => {
   return (
     <div>
       <h1 style={H1Style}>City-Bike-Dev-Academy</h1>
-      
+
       <TableData
         bikes={bikes}
+        loading={loading}
         currentPage={currentPage}
         numberOfPages={numberOfPages}
         prevPage={prevPage}
