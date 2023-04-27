@@ -1,0 +1,17 @@
+.project-list-table {
+  border-collapse: separate;
+  border-spacing: 0 12px;
+}
+
+.project-list-table tr {
+  background-color: #fff;
+}
+
+.table-nowrap td,
+.table-nowrap th {
+  white-space: nowrap;
+}
+
+.table_container {
+  margin: 0 2em;
+}
